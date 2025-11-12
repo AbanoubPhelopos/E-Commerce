@@ -26,7 +26,7 @@ namespace Catalog.Application.Handlers.Queries
         public async Task<IList<ProductResponseDto>> Handle(GetProductsByBrandNameQuery request, CancellationToken cancellationToken)
         {
             var products = await _productRepository.GetProductsByBrandAsync(request.BrandName);
-            var productResponse = _mapper.Map<IList<Product>, IList<ProductResponseDto>>(products.ToList());
+            var productResponse = _mapper.Map<IList<ProductResponseDto>>(products.ToList());
             return productResponse;
         }
     }
