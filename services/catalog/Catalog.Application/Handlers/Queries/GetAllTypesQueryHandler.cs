@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Catalog.Application.Queries;
 using Catalog.Application.Responses;
+using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using MediatR;
 
@@ -25,7 +22,7 @@ namespace Catalog.Application.Handlers.Queries
         public async Task<IList<TypesResponseDto>> Handle(GetAllTypesQuery request, CancellationToken cancellationToken)
         {
             var types = await _typeRepository.GetTypesAsync();
-            var typeResponse = _mapper.Map<IList<Core.Entities.ProductType>, IList<TypesResponseDto>>(types.ToList());
+            var typeResponse = _mapper.Map<IList<TypesResponseDto>>(types.ToList());
             return typeResponse;
         }
     }
