@@ -1,4 +1,10 @@
+using System.Reflection;
+using Asp.Versioning;
+using Catalog.Application.Commands;
 using Catalog.Application.Mappers;
+using Catalog.Core.Repositories;
+using Catalog.Infrastracure.Data.Context;
+using Catalog.Infrastracure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +12,21 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddAutoMapper(typeof(ProductMappingProfile).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
+            Assembly.GetExecutingAssembly(),
+            Assembly.GetAssembly(typeof(CreateProductCommand))!));
+
+builder.Services.AddScoped<ICatalogContext, CatalogContext>();
+builder.Services.AddScoped<IProductRepository, CatalogRepository>();
+builder.Services.AddScoped<IBrandRepository, CatalogRepository>();
+builder.Services.AddScoped<ITypeRepository, CatalogRepository>();
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
