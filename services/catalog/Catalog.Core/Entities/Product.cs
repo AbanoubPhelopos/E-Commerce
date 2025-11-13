@@ -1,12 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MongoDB.Bson.Serialization.Attributes;
 
-namespace Catalog.Core.Entities
+namespace Catalog.Core.Entities;
+
+public class Product : BaseEntity
 {
-    public class Product
-    {
-        
-    }
+    public string Name { get; set; } = string.Empty;
+    public string Description { get; set; } =  string.Empty;
+    public string ImageFile { get; set; } = string.Empty;
+     public string Summary { get; set; } = string.Empty;
+
+    [BsonRepresentation(MongoDB.Bson.BsonType.Decimal128)]
+    public decimal Price { get; set; }
+    public ProductBrand Brand { get; set; } = new();
+    public ProductType Type { get; set; } = new();
+    
 }

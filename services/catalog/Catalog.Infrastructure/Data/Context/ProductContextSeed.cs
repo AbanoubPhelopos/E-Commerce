@@ -2,7 +2,7 @@ using System.Text.Json;
 using Catalog.Core.Entities;
 using MongoDB.Driver;
 
-namespace Catalog.Infrastracure.Data
+namespace Catalog.Infrastracture.Data
 {
     public static class ProductContextSeed
     {

@@ -1,9 +1,9 @@
 using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
-using Catalog.Infrastracure.Data.Context;
+using Catalog.Infrastracture.Data.Context;
 using MongoDB.Driver;
 
-namespace Catalog.Infrastracure.Repositories
+namespace Catalog.Infrastracture.Repositories
 {
     public class CatalogRepository : IProductRepository, IBrandRepository, ITypeRepository
     {

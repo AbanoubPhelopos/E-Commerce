@@ -3,8 +3,9 @@ using Asp.Versioning;
 using Catalog.Application.Commands;
 using Catalog.Application.Mappers;
 using Catalog.Core.Repositories;
-using Catalog.Infrastracure.Data.Context;
-using Catalog.Infrastracure.Repositories;
+using Catalog.Infrastracture.Data.Context;
+using Catalog.Infrastracture.Repositories;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
