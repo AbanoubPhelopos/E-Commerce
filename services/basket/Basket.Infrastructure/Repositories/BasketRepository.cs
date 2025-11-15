@@ -25,14 +25,24 @@ namespace Basket.Infrastructure.Repositories
             return JsonConvert.DeserializeObject<ShoppingCart>(basket)!;
         }
 
-        public Task<ShoppingCart> UpdateBasketAsync(ShoppingCart basket)
+        public async Task<ShoppingCart> UpdateBasketAsync(ShoppingCart basket)
         {
-            throw new NotImplementedException();
+            var existingBasket = await GetBasketAsync(basket.UserName);
+            if (existingBasket != null)
+            {
+                return await GetBasketAsync(basket.UserName);
+            }
+            await _redisCache.SetStringAsync(basket.UserName, JsonConvert.SerializeObject(basket));
+            return await GetBasketAsync(basket.UserName);
         }
 
-        public Task DeleteBasketAsync(string userName)
+        public async Task DeleteBasketAsync(string userName)
         {
-            throw new NotImplementedException();
+            var existingBasket = await _redisCache.GetStringAsync(userName);
+            if (!string.IsNullOrEmpty(existingBasket))
+            {
+                await _redisCache.RemoveAsync(userName);
+            }
         }
     }
 }
