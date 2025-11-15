@@ -101,6 +101,22 @@ namespace Catalog.API.Controllers
             return Ok(isDeleted);
         }
 
-        
+        [HttpGet("[Action]")]
+        [ProducesResponseType(typeof(IList<BrandResponseDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllBrands()
+        {
+            var query = new GetAllBrandsQuery();
+            var brands = await _mediator.Send(query);
+            return Ok(brands);
+        }
+
+        [HttpGet("[Action]")]
+        [ProducesResponseType(typeof(IList<TypesResponseDto>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllTypes()
+        {
+            var query = new GetAllTypesQuery();
+            var types = await _mediator.Send(query);
+            return Ok(types);
+        }
     }
 }
