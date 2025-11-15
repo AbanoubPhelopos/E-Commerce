@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq; 
 using System.Threading.Tasks;
 using Catalog.Application.Commands;
 using Catalog.Application.Queries;
 using Catalog.Application.Responses;
+using Catalog.Core.Specs;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,9 +22,9 @@ namespace Catalog.API.Controllers
         [HttpGet("[Action]")]
         [ProducesResponseType(typeof(IList<ProductResponseDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> GetProducts()
+        public async Task<IActionResult> GetProducts([FromQuery] CatalogSpecParams specParams)
         {
-            var query = new GetAllProductsQuery();
+            var query = new GetAllProductsQuery(specParams);
             var product = await _mediator.Send(query);
             return Ok(product);
         }
