@@ -1,8 +1,10 @@
 using System.Reflection;
+using Asp.Versioning;
 using Basket.Application.Commands;
 using Basket.Application.Mappers;
 using Basket.Core.Repositories;
 using Basket.Infrastructure.Repositories;
+using Microsoft.OpenApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,12 +29,12 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Catalog API",
+        Title = "Basket API",
         Version = "v1",
-        Description = "this api for Catalog microservice in an e-commerce application",
-        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+        Description = "this api for Basket microservice in an e-commerce application",
+        Contact = new OpenApiContact
         {
             Name = "Abanoub Saweris",
             Email = "abanoub.saweris02@gmail.com",
@@ -43,6 +45,10 @@ builder.Services.AddSwaggerGen(options =>
 
 builder.Services.AddOpenApi();
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
+});
 
 var app = builder.Build();
 
@@ -50,6 +56,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Basket API V1");
+    });
 }
 
 app.UseHttpsRedirection();
