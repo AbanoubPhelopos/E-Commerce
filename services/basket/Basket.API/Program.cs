@@ -29,12 +29,12 @@ builder.Services.AddApiVersioning(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
-    options.SwaggerDoc("v1", new OpenApiInfo
+    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
     {
         Title = "Basket API",
         Version = "v1",
         Description = "this api for Basket microservice in an e-commerce application",
-        Contact = new OpenApiContact
+        Contact = new Microsoft.OpenApi.Models.OpenApiContact
         {
             Name = "Abanoub Saweris",
             Email = "abanoub.saweris02@gmail.com",
