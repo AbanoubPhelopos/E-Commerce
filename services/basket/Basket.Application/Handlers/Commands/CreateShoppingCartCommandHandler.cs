@@ -29,7 +29,7 @@ namespace Basket.Application.Handlers.Commands
                 UserName = request.UserName,
                 Items = request.Items
             };
-            var createdBasket = await _basketRepository.CreateBasketAsync(basket);
+            var createdBasket = await _basketRepository.UpdateBasketAsync(basket);
             var response = _mapper.Map<ShoppingCartResponse>(createdBasket);
             return response;
         }
