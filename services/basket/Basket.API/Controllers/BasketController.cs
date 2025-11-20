@@ -19,7 +19,7 @@ namespace Basket.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("{action}/{username}")]
+        [HttpGet("[action]/{username}")]
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetBasket(string username)
         {
@@ -28,7 +28,7 @@ namespace Basket.API.Controllers
             return Ok(basket);
         }
 
-        [HttpPost("{action}")]
+        [HttpPost("[action]")]
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCartResponse>> CreateBasket([FromBody] CreateShoppingCartCommand command)
         {
@@ -36,7 +36,7 @@ namespace Basket.API.Controllers
             return Ok(result);
         }
         
-        [HttpDelete("{action}/{username}")]
+        [HttpDelete("[action]/{username}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteBasket(string username)
         {
