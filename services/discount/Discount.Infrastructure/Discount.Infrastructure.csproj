@@ -10,4 +10,10 @@
     <ProjectReference Include="..\Discount.Application\Discount.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
+    <PackageReference Include="Npgsql" Version="3.1.7" />
+  </ItemGroup>
+
 </Project>
