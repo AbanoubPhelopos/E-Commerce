@@ -1,23 +1,48 @@
+using System.Reflection;
+using Discount.API.Services;
+using Discount.Application.Commands;
+using Discount.Application.Mappings;
+using Discount.Core.Repositories;
+using Discount.Infrastructure.Extensions;
+using Discount.Infrastructure.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
+builder.Services.AddAutoMapper(typeof(DiscountProfile).Assembly);
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
+            Assembly.GetExecutingAssembly(),
+            Assembly.GetAssembly(typeof(CreateDiscountCommand))!));
+
+builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
+builder.Services.AddGrpc();
+
+builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddOpenApi();
+
+
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+app.MigrateDatabase<Program>();
+app.UseRouting();
 
-app.UseAuthorization();
-
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGrpcService<DiscountService>();
+    endpoints.MapGet("/", async context =>
+    {
+        await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client");
+    });
+});
 
 app.Run();
