@@ -1,4 +1,4 @@
-/*
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +13,8 @@ namespace Discount.Application.Mappings
     {
         public DiscountProfile()
         {
-            //CreateMap<Coupon, CouponModel>().ReverseMap();
+            CreateMap<Coupon, CouponModel>().ReverseMap();
         }
     }
 }
 
-*/
