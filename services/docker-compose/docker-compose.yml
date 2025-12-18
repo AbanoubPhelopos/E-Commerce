@@ -41,6 +41,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - CacheSettings__ConnectionString=basketdb:6379
+      - GRPCSettings__DiscountUrl=http://discount.api:8080
   discount.api:
     image: discount.api:latest
     container_name: discount.api

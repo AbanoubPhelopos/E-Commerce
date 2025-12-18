@@ -12,6 +12,6 @@ namespace Basket.API.Controllers
     [Route("api/v{version:apiVersion}/[controller]")]
     public class BaseApiController : ControllerBase
     {
-        
+
     }
 }

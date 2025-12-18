@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Basket.Application.Commands;
 using Basket.Application.Queries;
 using Basket.Application.Responses;
@@ -19,7 +15,7 @@ namespace Basket.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("[action]/{username}")]
+        [HttpGet("{username}")]
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetBasket(string username)
         {
@@ -28,15 +24,16 @@ namespace Basket.API.Controllers
             return Ok(basket);
         }
 
-        [HttpPost("[action]")]
+        [HttpPost]
         [ProducesResponseType(typeof(ShoppingCart), StatusCodes.Status200OK)]
         public async Task<ActionResult<ShoppingCartResponse>> CreateBasket([FromBody] CreateShoppingCartCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-        
-        [HttpDelete("[action]/{username}")]
+
+
+        [HttpDelete("{username}")]
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteBasket(string username)
         {

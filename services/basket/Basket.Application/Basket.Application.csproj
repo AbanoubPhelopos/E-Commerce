@@ -12,7 +12,15 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Grpc.AspNetCore" Version="2.71.0" />
     <PackageReference Include="MediatR" Version="13.1.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include = "..\..\..\services\discount\Discount.Application\Protos\discount.proto" 
+    link="Protos\discount.proto"
+    GrpcServices="Client" />
+  </ItemGroup>
+
 
 </Project>
