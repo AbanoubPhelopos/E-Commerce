@@ -4,5 +4,5 @@ namespace Ordering.Core.Repositories;
 
 public interface IOrderRepository : IRepository<Order>
 {
-    Task<IEnumerable<Order>> GetOrdersByCustomerNameAsync(string userName);
+    Task<IEnumerable<Order>> GetOrdersByCustomerNameAsync(string userName, CancellationToken cancellationToken = default);
 }
