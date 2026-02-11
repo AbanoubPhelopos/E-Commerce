@@ -1,37 +1,48 @@
-﻿using Ordering.Core.Entities;
+﻿using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Ordering.Core.Entities;
 using Ordering.Core.Repositories;
+using Ordering.Infrastructure.Data;
 
 namespace Ordering.Infrastructure.Repositories;
 
-public class RepositoryBase<T> : IRepository<T> where T : BaseEntity
+public class RepositoryBase<T>(OrderContext context) : IRepository<T>
+    where T : BaseEntity
 {
-    public Task<IReadOnlyList<T>> GetAllAsync()
+    private readonly OrderContext _context = context;
+
+    public async Task<IReadOnlyList<T>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().ToListAsync(cancellationToken);
     }
 
-    public Task<IReadOnlyList<T>> GetAsync(Func<T, bool> predicate)
+    public async Task<IReadOnlyList<T>> GetAsync(Expression<Func<T, bool>> predicate, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().Where(predicate).ToListAsync(cancellationToken);
+        
     }
 
-    public Task<T> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(int id,CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        return await _context.Set<T>().FindAsync(id,cancellationToken);
     }
 
-    public Task<T> AddAsync(T entity)
+    public async Task<T> AddAsync(T entity,CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _context.Entry(entity).State = EntityState.Added;
+        await _context.SaveChangesAsync(cancellationToken);
+        return entity;
     }
 
-    public Task UpdateAsync(T entity)
+    public async Task UpdateAsync(T entity,CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _context.Entry(entity).State = EntityState.Modified;
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task DeleteAsync(T entity)
+    public async Task DeleteAsync(T entity,CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        _context.Entry(entity).State = EntityState.Deleted;
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }
