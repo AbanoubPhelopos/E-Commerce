@@ -1,0 +1,37 @@
+﻿using System.Data;
+using FluentValidation;
+using Ordering.Application.Commands;
+
+namespace Ordering.Application.Validators;
+
+public class UpdateOrderCommandValidator : AbstractValidator<UpdateOrderCommand>
+{
+    public UpdateOrderCommandValidator()
+    {
+        RuleFor(o => o.Id)
+            .NotEmpty().WithMessage("Id is required.")
+            .NotNull().WithMessage("Id is required.")
+            .GreaterThan(0).WithMessage("Id should be greater than 0.");
+        
+        RuleFor(o=>o.UserName)
+            .NotEmpty().WithMessage("UserName is required.")
+            .NotNull().WithMessage("UserName is required.")
+            .MaximumLength(70).WithMessage("UserName must not exceed 70 characters.");
+        
+        RuleFor(o=>o.TotalPrice)
+            .NotEmpty().WithMessage("TotalPrice is required.")
+            .NotNull().WithMessage("TotalPrice is required.")
+            .GreaterThan(-1).WithMessage("TotalPrice should not be negative.");
+
+        RuleFor(o => o.EmailAddress)
+            .NotEmpty().WithMessage("EmailAddress is required.");
+
+        RuleFor(o => o.FirstName)
+            .NotEmpty().WithMessage("FirstName is required.")
+            .NotNull().WithMessage("FirstName is required.");
+        
+        RuleFor(o => o.LastName)
+            .NotEmpty().WithMessage("LastName is required.")
+            .NotNull().WithMessage("LastName is required.");
+    }
+}
