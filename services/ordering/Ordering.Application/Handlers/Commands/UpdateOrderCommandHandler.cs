@@ -21,6 +21,7 @@ public class UpdateOrderCommandHandler (IOrderRepository orderRepository, IMappe
         {
             throw new OrderNotFoundException(nameof(Order),$"Order with id {request.Id} not found");
         }
+        _mapper.Map(request, orderToUpdate);
         await _orderRepository.UpdateAsync(orderToUpdate, cancellationToken);
         _logger.LogInformation($"Order {request.Id} updated");
         return Unit.Value;
