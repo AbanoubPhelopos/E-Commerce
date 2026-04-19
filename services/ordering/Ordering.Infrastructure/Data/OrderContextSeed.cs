@@ -5,7 +5,7 @@ namespace Ordering.Infrastructure.Data;
 
 public class OrderContextSeed
 {
-    public async Task SeeedAsync(OrderContext orderContext, ILogger<OrderContextSeed> logger)
+    public static async Task SeedAsync(OrderContext orderContext, ILogger<OrderContextSeed> logger)
     {
         if (!orderContext.Orders.Any())
         {

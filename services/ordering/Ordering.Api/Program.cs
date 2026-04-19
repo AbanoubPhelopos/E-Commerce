@@ -37,11 +37,15 @@ builder.Services.AddApplicationServices();
 
 builder.Services.AddControllers();
 
-builder.Services.AddInfrastructureServices(builder.Configuration);
-
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
+
+await app.MigrateDatabaseAsync<OrderContext>(async (context, services) =>
+{
+    var logger = services.GetRequiredService<ILogger<OrderContextSeed>>();
+    await OrderContextSeed.SeedAsync(context, logger);
+});
 
 if (app.Environment.IsDevelopment())
 {
