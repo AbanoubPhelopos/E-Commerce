@@ -8,9 +8,6 @@ using Discount.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddControllers();
-
 builder.Services.AddAutoMapper(typeof(DiscountProfile).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
             Assembly.GetExecutingAssembly(),
@@ -20,10 +17,6 @@ builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddGrpc();
 
 builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddOpenApi();
-
-
 builder.Services.AddOpenApi();
 
 var app = builder.Build();
@@ -34,15 +27,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MigrateDatabase<Program>();
-app.UseRouting();
 
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapGrpcService<DiscountService>();
-    endpoints.MapGet("/", async context =>
-    {
-        await context.Response.WriteAsync("Communication with gRPC endpoints must be made through a gRPC client");
-    });
-});
+app.MapGrpcService<DiscountService>();
+app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client");
 
 app.Run();
