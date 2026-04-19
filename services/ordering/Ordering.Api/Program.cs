@@ -1,6 +1,8 @@
 using Asp.Versioning;
 using Microsoft.OpenApi;
+using Ordering.Api.Extensions;
 using Ordering.Application.Extensions;
+using Ordering.Infrastructure.Data;
 using Ordering.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
