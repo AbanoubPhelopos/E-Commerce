@@ -6,10 +6,10 @@ using MediatR;
 
 namespace Basket.Application.Commands
 {
-    public class DeleteShoppinngCartCommand : IRequest<Unit>
+    public class DeleteShoppingCartCommand : IRequest<Unit>
     {
         public string UserName { get; set; }
-        public DeleteShoppinngCartCommand(string userName)
+        public DeleteShoppingCartCommand(string userName)
         {
             UserName = userName;
         }

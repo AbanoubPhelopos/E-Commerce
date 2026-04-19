@@ -37,7 +37,7 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(void), StatusCodes.Status200OK)]
         public async Task<IActionResult> DeleteBasket(string username)
         {
-            var command = new DeleteShoppinngCartCommand(username);
+            var command = new DeleteShoppingCartCommand(username);
             await _mediator.Send(command);
             return Ok();
         }
