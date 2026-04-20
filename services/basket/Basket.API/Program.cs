@@ -5,6 +5,7 @@ using Basket.Application.GrpcServices;
 using Basket.Application.Mappers;
 using Basket.Core.Repositories;
 using Basket.Infrastructure.Repositories;
+using MassTransit;
 using Microsoft.OpenApi;
 using static Discount.Grpc.Protos.DiscountProtoService;
 
@@ -23,8 +24,19 @@ builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddScoped<DiscountGrpcService>();
 builder.Services.AddGrpcClient<DiscountProtoServiceClient>(o =>
 {
-    o.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]);
+    o.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
 });
+
+
+builder.Services.AddMassTransit(config =>
+{
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+    });
+});
+builder.Services.AddMassTransitHostedService();
+
 
 builder.Services.AddApiVersioning(options =>
 {

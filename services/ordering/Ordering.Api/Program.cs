@@ -1,5 +1,8 @@
 using Asp.Versioning;
+using EventBus.Messages.Common;
+using MassTransit;
 using Microsoft.OpenApi;
+using Ordering.Api.EventBusConsumer;
 using Ordering.Api.Extensions;
 using Ordering.Application.Extensions;
 using Ordering.Infrastructure.Data;
