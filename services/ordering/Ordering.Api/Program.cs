@@ -38,6 +38,23 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 
+builder.Services.AddScoped<BasketOrderingConsumer>();
+builder.Services.AddMassTransit(config =>
+{
+    config.AddConsumer<BasketOrderingConsumer>();
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+        cfg.ReceiveEndpoint(EventBusConstants.BasketCheckoutQueue, c =>
+        {
+            c.ConfigureConsumer<BasketOrderingConsumer>(ctx);
+        });
+    });
+});
+builder.Services.AddMassTransitHostedService();
+
+
+
 builder.Services.AddControllers();
 
 builder.Services.AddOpenApi();
