@@ -15,7 +15,7 @@ services:
       - DatabaseSettings__BrandsCollectionName=Brands
       - DatabaseSettings__TypesCollectionName=Types
       - DatabaseSettings__ProductsCollectionName=Products
-
+      - Logging__ElasticsearchUrl=http://elasticsearch:9200
   catalogdb:
     image: mongo:latest
     container_name: catalogdb
@@ -44,6 +44,7 @@ services:
       - CacheSettings__ConnectionString=basketdb:6379
       - GRPCSettings__DiscountUrl=http://discount.api:8080
       - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672
+      - Logging__ElasticsearchUrl=http://elasticsearch:9200
   discount.api:
     image: discount.api:latest
     container_name: discount.api
@@ -60,6 +61,7 @@ services:
       - DatabaseSettings__ConnectionString=Server=discountdb;port=5432;Database=DiscountDb;User Id=postgres;Password=P@ssword123;
       - DatabaseSettings__DatabaseName=DiscountDb
       - DatabaseSettings__DiscountsCollectionName=Discounts
+      - Logging__ElasticsearchUrl=http://elasticsearch:9200
   discountdb:
     image: postgres:16
     container_name: discountdb
@@ -94,6 +96,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__OrderingConnectionString=Server=orderingdb;Database=OrderingDb;User Id=sa;Password=P@ssw0rd123;TrustServerCertificate=True;
       - EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672
+      - Logging__ElasticsearchUrl=http://elasticsearch:9200
   orderingdb:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: orderingdb
@@ -113,6 +116,29 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
+    container_name: elasticsearch
+    environment:
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    restart: always
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticsearchdata:/usr/share/elasticsearch/data
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.14.3
+    container_name: kibana
+    restart: always
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
   rabbitmq:
     image: rabbitmq:3-management-alpine
     container_name: rabbitmq
@@ -141,4 +167,6 @@ volumes:
   pgadmin_data:
     driver: local
   orderingdbdata:
+    driver: local
+  elasticsearchdata:
     driver: local
