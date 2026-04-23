@@ -8,8 +8,11 @@ using Basket.Infrastructure.Repositories;
 using MassTransit;
 using Microsoft.OpenApi;
 using static Discount.Grpc.Protos.DiscountProtoService;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(Logger.ConfigureLogger);
 
 // Add services to the container.
 
