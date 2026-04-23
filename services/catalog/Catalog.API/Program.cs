@@ -5,9 +5,12 @@ using Catalog.Application.Mappers;
 using Catalog.Core.Repositories;
 using Catalog.Infrastracture.Data.Context;
 using Catalog.Infrastracture.Repositories;
+using Common.Logging;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(Logger.ConfigureLogger);
 
 
 builder.Services.AddControllers();

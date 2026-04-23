@@ -2,33 +2,39 @@ using Catalog.Core.Entities;
 using Catalog.Core.Repositories;
 using Catalog.Core.Specs;
 using Catalog.Infrastracture.Data.Context;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace Catalog.Infrastracture.Repositories
 {
     public class CatalogRepository : IProductRepository, IBrandRepository, ITypeRepository
     {
-        private ICatalogContext _context { get; set; } 
+        private ICatalogContext _context { get; set; }
+        private readonly ILogger<CatalogRepository> _logger;
 
-        public CatalogRepository(ICatalogContext context)
+        public CatalogRepository(ICatalogContext context, ILogger<CatalogRepository> logger)
         {
             _context = context;
+            _logger = logger;
         }
 
         public async Task<Product> CreateProductAsync(Product product)
         {
+            _logger.LogInformation("Creating product {ProductName}", product.Name);
             await _context.Products.InsertOneAsync(product);
             return product;
         }
         
         public async Task<bool> DeleteProductAsync(string id)
         {
+            _logger.LogInformation("Deleting product {ProductId}", id);
             var deleteResult = await _context.Products.DeleteOneAsync(p => p.Id == id);
             return deleteResult.IsAcknowledged && deleteResult.DeletedCount > 0;
         }
         
         public async Task<Pagination<Product>> GetProductsAsync(CatalogSpecParams specParams)
         {
+            _logger.LogInformation("Getting products with page {PageIndex}, size {PageSize}", specParams.PageIndex, specParams.PageSize);
             var filter = Builders<Product>.Filter.Empty;
             if (!string.IsNullOrEmpty(specParams.Search))
             {
@@ -48,29 +54,48 @@ namespace Catalog.Infrastracture.Repositories
             return new Pagination<Product>(specParams.PageIndex, specParams.PageSize, (int)totalItems, data);       
         }
         
-        public async Task<Product> GetProductByIdAsync(string id) 
-            => await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
+        public async Task<Product> GetProductByIdAsync(string id)
+        {
+            _logger.LogInformation("Getting product by id {ProductId}", id);
+            return await _context.Products.Find(p => p.Id == id).FirstOrDefaultAsync();
+        }
         
         public async Task<IEnumerable<Product>> GetProductsByBrandAsync(string brandName)
-            => await _context.Products.Find(p => p.Brand.Name == brandName).ToListAsync();
+        {
+            _logger.LogInformation("Getting products by brand {BrandName}", brandName);
+            return await _context.Products.Find(p => p.Brand.Name == brandName).ToListAsync();
+        }
         
         public async Task<IEnumerable<Product>> GetProductsByNameAsync(string productName)
-        => await _context.Products.Find(p => p.Name == productName).ToListAsync();
+        {
+            _logger.LogInformation("Getting products by name {ProductName}", productName);
+            return await _context.Products.Find(p => p.Name == productName).ToListAsync();
+        }
         
         public async Task<IEnumerable<Product>> GetProductsByTypeAsync(string typeName)
-        => await _context.Products.Find(p => p.Type.Name == typeName).ToListAsync();
+        {
+            _logger.LogInformation("Getting products by type {TypeName}", typeName);
+            return await _context.Products.Find(p => p.Type.Name == typeName).ToListAsync();
+        }
 
         public async Task<bool> UpdateProductAsync(Product product)
         {
+            _logger.LogInformation("Updating product {ProductId}", product.Id);
             var updateResult = await _context.Products.ReplaceOneAsync(p => p.Id == product.Id, product);
             return updateResult.IsAcknowledged && updateResult.ModifiedCount > 0;
         }
         
         public async Task<IEnumerable<ProductBrand>> GetBrandsAsync()
-        => await _context.Brands.Find(b => true).ToListAsync();
+        {
+            _logger.LogInformation("Getting all brands");
+            return await _context.Brands.Find(b => true).ToListAsync();
+        }
         
         public async Task<IEnumerable<ProductType>> GetTypesAsync()
-        => await _context.Types.Find(t => true).ToListAsync();
+        {
+            _logger.LogInformation("Getting all types");
+            return await _context.Types.Find(t => true).ToListAsync();
+        }
 
         private async Task<IReadOnlyList<Product>> DataFilter(CatalogSpecParams specParams,FilterDefinition<Product> filter)
         {
