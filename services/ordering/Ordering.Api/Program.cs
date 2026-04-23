@@ -7,8 +7,11 @@ using Ordering.Api.Extensions;
 using Ordering.Application.Extensions;
 using Ordering.Infrastructure.Data;
 using Ordering.Infrastructure.Extensions;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(Logger.ConfigureLogger);
 
 
 builder.Services.AddApiVersioning(options =>

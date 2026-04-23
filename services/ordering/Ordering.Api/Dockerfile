@@ -11,6 +11,7 @@ COPY ["services/ordering/Ordering.Application/Ordering.Application.csproj", "ser
 COPY ["services/ordering/Ordering.Core/Ordering.Core.csproj", "services/ordering/Ordering.Core/"]
 COPY ["services/ordering/Ordering.Infrastructure/Ordering.Infrastructure.csproj", "services/ordering/Ordering.Infrastructure/"]
 COPY ["infrastructure/EventBus.Messages/EventBus.Messages.csproj", "infrastructure/EventBus.Messages/"]
+COPY ["services/common/Common.Logging/Common.Logging.csproj", "services/common/Common.Logging/"]
 
 RUN dotnet restore "./services/ordering/Ordering.Api/Ordering.Api.csproj"
 COPY . .

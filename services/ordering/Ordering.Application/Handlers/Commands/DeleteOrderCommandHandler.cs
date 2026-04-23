@@ -16,15 +16,17 @@ public class DeleteOrderCommandHandler(IOrderRepository orderRepository, IMapper
     
     public async Task<Unit> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Deleting order {OrderId}", request.Id);
         var orderToDelete = await _orderRepository.GetByIdAsync(request.Id,cancellationToken);
 
         if (orderToDelete == null)
         {
+            _logger.LogWarning("Order {OrderId} not found for deletion", request.Id);
             throw new OrderNotFoundException(nameof(Order),request.Id);
         }
         
         await _orderRepository.DeleteAsync(orderToDelete, cancellationToken);
-        _logger.LogInformation($"Order {request.Id} deleted");
+        _logger.LogInformation("Order {OrderId} deleted successfully", request.Id);
         return Unit.Value;
     }
 }

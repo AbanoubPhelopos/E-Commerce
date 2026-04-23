@@ -14,9 +14,10 @@ public class CheckoutOrderCommandHandler(IOrderRepository orderRepository, IMapp
     private readonly ILogger<CheckoutOrderCommandHandler> _logger = logger;
     public async Task<int> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
     {
+        _logger.LogInformation("Checking out order for user {UserName}", request.UserName);
         var order = _mapper.Map<Order>(request);
         var generatedOrder = await _orderRepository.AddAsync(order, cancellationToken);
-        _logger.LogInformation($"Order {generatedOrder.Id} created");
+        _logger.LogInformation("Order {OrderId} created for user {UserName}", generatedOrder.Id, request.UserName);
         return generatedOrder.Id;
     }
 }
