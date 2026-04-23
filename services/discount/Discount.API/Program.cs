@@ -5,8 +5,11 @@ using Discount.Application.Mappings;
 using Discount.Core.Repositories;
 using Discount.Infrastructure.Extensions;
 using Discount.Infrastructure.Repositories;
+using Common.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSerilog(Logger.ConfigureLogger);
 
 builder.Services.AddAutoMapper(typeof(DiscountProfile).Assembly);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
