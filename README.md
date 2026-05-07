@@ -8,6 +8,9 @@ A distributed e-commerce platform built with ASP.NET microservices, following Cl
 ┌─────────────────────────────────────────────────────────────────────┐
 │                    E-Commerce Solution                                │
 ├──────────────┬──────────────┬───────────────┬───────────────────────────┤
+│                    [🛡️ Gateway](apiGateways/Ocelot.APIGateway/README.md)                    │
+│                             (8010)                               │
+├──────────────┬──────────────┬───────────────┬───────────────────────────┤
 │   [Basket](services/basket/README.md) │  [Catalog](services/catalog/README.md) │  [Discount](services/discount/README.md) │      [Ordering](services/ordering/README.md)      │
 │     API      │     API      │     API    │        API                  │
 │    (8081)    │    (8080)   │   (8082)   │       (8083)               │
@@ -24,6 +27,7 @@ A distributed e-commerce platform built with ASP.NET microservices, following Cl
 
 | Service | Port | Database | Documentation |
 |---------|------|----------|---------------|
+| [Gateway](apiGateways/Ocelot.APIGateway/README.md) | 8010 | - | Ocelot API Gateway |
 | [Basket](services/basket/README.md) | 8081 | Redis | Shopping cart management |
 | [Catalog](services/catalog/README.md) | 8080 | MongoDB | Product catalog |
 | [Discount](services/discount/README.md) | 8082 | PostgreSQL | Discount/coupon management |

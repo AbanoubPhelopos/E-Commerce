@@ -18,18 +18,18 @@ This is a **Microservices** e-commerce platform built with ASP.NET. Each service
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                 E-Commerce Solution                       │
-├───────────────┬───────────────┬────────────┬────────────────┤
-│    Basket    │   Catalog    │  Discount │    Ordering    │
-│     API      │     API      │    API   │      API       │
-│   (8081)     │   (8080)    │  (8082)  │    (8083)     │
-├───────────────┼───────────────┼────────────┼────────────────┤
-│    Redis      │   MongoDB    │ PostgreSQL│   SQL Server   │
-│   Cache      │  Database    │ Database  │   Database     │
-├───────────────┴───────────────┴────────────┴────────────────┤
-│              MassTransit + RabbitMQ                        │
-│            (async events between services)                 │
-└─────────────────────────────────────────────────────────────┘
+│                  Ocelot API Gateway (8010)                   │
+├───────────────┬───────────────┬────────────┬────────────────────────┤
+│    Basket    │   Catalog    │  Discount │    Ordering             │
+│     API      │     API      │    API   │      API                │
+│   (8081)     │   (8080)    │  (8082)  │    (8083)              │
+├───────────────┼───────────────┼────────────┼────────────────────────┤
+│    Redis      │   MongoDB    │ PostgreSQL│   SQL Server            │
+│   Cache      │  Database    │ Database  │   Database              │
+├───────────────┴───────────────┴────────────┴────────────────────────┤
+│              MassTransit + RabbitMQ                                │
+│            (async events between services)                         │
+└─────────────────────────────────────────────────────────────────────┘
 ```
 
 ### Architecture Pattern
@@ -252,6 +252,13 @@ E-Commerce/
 ├── ECommerce.sln
 ├── README.md
 │
+├── apiGateways/
+│   └── Ocelot.APIGateway/            # API Gateway (Ocelot, .NET 10, port 8010)
+│       ├── Program.cs
+│       ├── ocelot.Development.json   # Dev config (host.docker.internal)
+│       ├── ocelot.Docker.json        # Docker config (container names)
+│       └── Dockerfile
+│
 ├── services/
 │   ├── basket/
 │   │   ├── Basket.API/
@@ -324,6 +331,7 @@ dotnet run --project services/ordering/Ordering.Api
 
 | Service | Port |
 |--------|------|
+| API Gateway | 8010 |
 | Basket API | 8081 |
 | Catalog API | 8080 |
 | Discount API | 8082 |

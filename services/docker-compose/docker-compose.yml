@@ -116,6 +116,20 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+  ocelot.apigateway:
+    image: ocelot.apigateway:latest
+    build:
+      context: ../../
+      dockerfile: apiGateways/Ocelot.APIGateway/Dockerfile
+    ports:
+      - "8010:8080"
+    depends_on:
+      - catalog.api
+      - basket.api
+      - discount.api
+      - ordering.api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.14.3
     container_name: elasticsearch

@@ -18,7 +18,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(
 
 builder.Services.AddScoped<IDiscountRepository, DiscountRepository>();
 builder.Services.AddGrpc();
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 
@@ -32,6 +32,7 @@ if (app.Environment.IsDevelopment())
 app.MigrateDatabase<Program>();
 
 app.MapGrpcService<DiscountService>();
+app.MapControllers();
 app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client");
 
 app.Run();
